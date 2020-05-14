@@ -21,7 +21,7 @@
       />
     </div>
     <div class="remove-post" @click="removePost(index)">
-      <button>Delete</button>
+      <button>DELETE</button>
     </div>
   </div>
 </template>
@@ -58,7 +58,7 @@
     },
     methods: {
       removePost(index) {
-        this.$emit("removedPost", index);
+        this.$eventBus.$emit("removedPost", index);
       },
       editPost() {
         this.beforeEditCache = this.title;
@@ -69,7 +69,7 @@
           this.title = this.beforeEditCache;
         }
         this.editing = false;
-        this.$emit("editedPost", {
+        this.$eventBus.$emit("editedPost", {
           index: this.index,
           post: {
             id: this.id,

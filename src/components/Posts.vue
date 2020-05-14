@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <form @submit.prevent="addPost">
       <input
         type="text"
@@ -13,7 +13,7 @@
         placeholder="Body"
         v-model="post.body"
       />
-      <button class="post-btn">Post</button>
+      <button class="post-btn">POST</button>
     </form>
     <h1>All Posts</h1>
 
@@ -22,8 +22,6 @@
       :key="post.id"
       :post="post"
       :index="index"
-      @removedPost="removePost"
-      @editedPost="editedPost"
     >
     </post>
 
@@ -35,6 +33,7 @@
 
 <script>
   import Post from "./Post";
+  import axios from "axios";
 
   export default {
     name: "posts",
@@ -50,23 +49,14 @@
           title: "",
           body: "",
         },
-        posts: [
-          {
-            id: 1,
-            title: "Lorem ipsum dolor sit amet.",
-            body:
-              "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam, sequi?",
-            editing: false,
-          },
-          {
-            id: 2,
-            title: "Lorem ipsum dolor sit amet.",
-            body:
-              "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio, nihil!",
-            editing: false,
-          },
-        ],
+        posts: [],
       };
+    },
+    created() {
+      this.$eventBus.$on("removedPost", (index) => this.removePost(index));
+      this.$eventBus.$on("editedPost", (data) => this.editedPost(data));
+
+      this.getPosts();
     },
     computed: {
       totalPosts() {
@@ -74,13 +64,31 @@
       },
     },
     methods: {
+      getPosts() {
+        axios
+          .get("http://127.0.0.1:8001/api/posts")
+          .then((res) => {
+            this.posts = res.data;
+          })
+          .catch((err) => console.log(err));
+      },
       addPost() {
         if (this.post.title.length === 0 || this.post.body.length === 0) {
           alert("NOT A VALID POST");
           this.post.title = "";
           this.post.body = "";
+          this.getPosts();
           return;
         }
+        axios
+          .post("http://127.0.0.1:8001/api/posts", {
+            id: this.idForPost,
+            title: this.post.title,
+            body: this.post.body,
+          })
+          .then((res) => {
+            console.log(res);
+          });
         this.posts.push({
           id: this.idForPost,
           title: this.post.title,
@@ -95,7 +103,8 @@
         this.posts.splice(index, 1);
       },
       editedPost(data) {
-        this.posts.splice(data.index, 1, data.post);
+        const index = this.posts.findIndex((post) => post.id == data.id);
+        this.posts.splice(index, 1, data.post);
       },
     },
   };
@@ -228,6 +237,12 @@
   }
 
   .post-btn {
+    width: 100%;
+    font-size: 1.5rem;
+    letter-spacing: 0.2rem;
+    transition: 0.5s ease;
+    height: 2.5rem;
+
     &:hover {
       border: 0.1rem solid #000;
       box-shadow: 0 0.2rem 0.2rem #000;
