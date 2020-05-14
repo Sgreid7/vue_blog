@@ -18,12 +18,11 @@
     <h1>All Posts</h1>
 
     <post
-      v-for="(post, index) in posts"
+      v-for="post in this.$store.state.posts"
       :key="post.id"
       :post="post"
       :index="index"
-    >
-    </post>
+    ></post>
 
     <div class="extra-container">
       <div>{{ totalPosts }} total posts</div>
@@ -33,7 +32,7 @@
 
 <script>
   import Post from "./Post";
-  import axios from "axios";
+  // import axios from "axios";
 
   export default {
     name: "posts",
@@ -43,35 +42,27 @@
     data() {
       return {
         idForPost: 3,
-        beforeEditCache: "",
         post: {
-          idForPost: "",
+          id: "id",
           title: "",
           body: "",
         },
-        posts: [],
       };
-    },
-    created() {
-      this.$eventBus.$on("removedPost", (index) => this.removePost(index));
-      this.$eventBus.$on("editedPost", (data) => this.editedPost(data));
-
-      this.getPosts();
     },
     computed: {
       totalPosts() {
-        return this.posts.length;
+        return this.$store.getters.totalPosts;
       },
     },
     methods: {
-      getPosts() {
-        axios
-          .get("http://127.0.0.1:8001/api/posts")
-          .then((res) => {
-            this.posts = res.data;
-          })
-          .catch((err) => console.log(err));
-      },
+      // getPosts() {
+      //   axios
+      //     .get("http://127.0.0.1:8001/api/posts")
+      //     .then((res) => {
+      //       this.$store.state.posts = res.data;
+      //     })
+      //     .catch((err) => console.log(err));
+      // },
       addPost() {
         if (this.post.title.length === 0 || this.post.body.length === 0) {
           alert("NOT A VALID POST");
@@ -80,16 +71,20 @@
           this.getPosts();
           return;
         }
-        axios
-          .post("http://127.0.0.1:8001/api/posts", {
-            id: this.idForPost,
-            title: this.post.title,
-            body: this.post.body,
-          })
-          .then((res) => {
-            console.log(res);
-          });
-        this.posts.push({
+        // axios
+        //   .post("http://127.0.0.1:8001/api/posts", {
+        //     title: this.post.title,
+        //     body: this.post.body,
+        //   })
+        //   .then((res) => {
+        //     console.log(res);
+        //   });
+        // this.$store.state.posts.push({
+        //   title: this.post.title,
+        //   body: this.post.body,
+        // });
+
+        this.$store.dispatch("addPost", {
           id: this.idForPost,
           title: this.post.title,
           body: this.post.body,
@@ -98,13 +93,6 @@
         this.post.title = "";
         this.post.body = "";
         this.idForPost++;
-      },
-      removePost(index) {
-        this.posts.splice(index, 1);
-      },
-      editedPost(data) {
-        const index = this.posts.findIndex((post) => post.id == data.id);
-        this.posts.splice(index, 1, data.post);
       },
     },
   };

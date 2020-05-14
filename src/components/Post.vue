@@ -1,26 +1,22 @@
 <template>
   <div class="post-item">
     <div class="post-item-left">
-      <div v-if="!editing" @dblclick="editPost()" class="post-item-label">
-        <h3>
-          {{ title }}
-        </h3>
-        <p>
-          {{ body }}
-        </p>
+      <div v-if="!editing" @dblclick="editPost" class="post-item-label">
+        <h3>{{ title }}</h3>
+        <p>{{ body }}</p>
       </div>
       <input
         v-else
         class="post-item-edit"
         type="text"
         v-model="title"
-        @blur="editDone()"
-        @keyup.enter="editDone()"
-        @keyup.esc="cancelEdit()"
+        @blur="editDone"
+        @keyup.enter="editDone"
+        @keyup.esc="cancelEdit"
         v-focus
       />
     </div>
-    <div class="remove-post" @click="removePost(index)">
+    <div class="remove-post" @click="removePost(post.id)">
       <button>DELETE</button>
     </div>
   </div>
@@ -32,10 +28,6 @@
     props: {
       post: {
         type: Object,
-        required: true,
-      },
-      index: {
-        type: Number,
         required: true,
       },
     },
@@ -57,8 +49,8 @@
       },
     },
     methods: {
-      removePost(index) {
-        this.$eventBus.$emit("removedPost", index);
+      removePost(id) {
+        this.$store.dispatch("deletePost", id);
       },
       editPost() {
         this.beforeEditCache = this.title;
@@ -69,14 +61,11 @@
           this.title = this.beforeEditCache;
         }
         this.editing = false;
-        this.$eventBus.$emit("editedPost", {
-          index: this.index,
-          post: {
-            id: this.id,
-            title: this.title,
-            body: this.body,
-            editing: this.editing,
-          },
+        this.$store.dispatch("updatePost", {
+          id: this.id,
+          title: this.title,
+          body: this.body,
+          editing: this.editing,
         });
       },
       cancelEdit() {
