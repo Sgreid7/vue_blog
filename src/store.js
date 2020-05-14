@@ -1,23 +1,25 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import axios from "axios";
 
 Vue.use(Vuex);
+axios.defaults.baseURL = "http://127.0.0.1:8001/api";
 
 export const store = new Vuex.Store({
   state: {
     posts: [
-      {
-        id: 1,
-        title: "This",
-        body: "That",
-        editing: false,
-      },
-      {
-        id: 2,
-        title: "Other",
-        body: "which",
-        editing: false,
-      },
+      // {
+      //   id: 1,
+      //   title: "This",
+      //   body: "That",
+      //   editing: false,
+      // },
+      // {
+      //   id: 2,
+      //   title: "Other",
+      //   body: "which",
+      //   editing: false,
+      // },
     ],
   },
   getters: {
@@ -26,6 +28,9 @@ export const store = new Vuex.Store({
     },
   },
   mutations: {
+    getPosts(state, posts) {
+      state.posts = posts;
+    },
     addPost(state, post) {
       state.posts.push({
         id: post.id,
@@ -49,20 +54,44 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
+    getPosts(context) {
+      axios
+        .get("/posts")
+        .then((res) => {
+          context.commit("getPosts", res.data);
+        })
+        .catch((err) => console.log(err));
+    },
     addPost(context, post) {
-      setTimeout(() => {
-        context.commit("addPost", post);
-      }, 100);
+      axios
+        .post("/posts", {
+          title: post.title,
+          body: post.body,
+        })
+        .then((res) => {
+          context.commit("addPost", res.data);
+        })
+        .catch((err) => console.log(err));
     },
     updatePost(context, post) {
-      setTimeout(() => {
-        context.commit("updatePost", post);
-      }, 100);
+      axios
+        .put(`/posts/${post.id}`, {
+          title: post.title,
+          body: post.body,
+        })
+        .then((res) => {
+          context.commit("updatePost", res.data);
+        })
+        .catch((err) => console.log(err));
     },
     deletePost(context, id) {
-      setTimeout(() => {
-        context.commit("deletePost", id);
-      }, 100);
+      axios
+        .delete(`/posts/${id}`)
+        // eslint-disable-next-line no-unused-vars
+        .then((res) => {
+          context.commit("deletePost", id);
+        })
+        .catch((err) => console.log(err));
     },
   },
 });

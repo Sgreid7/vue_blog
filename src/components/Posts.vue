@@ -21,7 +21,6 @@
       v-for="post in this.$store.state.posts"
       :key="post.id"
       :post="post"
-      :index="index"
     ></post>
 
     <div class="extra-container">
@@ -32,7 +31,6 @@
 
 <script>
   import Post from "./Post";
-  // import axios from "axios";
 
   export default {
     name: "posts",
@@ -49,20 +47,15 @@
         },
       };
     },
+    created() {
+      this.$store.dispatch("getPosts");
+    },
     computed: {
       totalPosts() {
         return this.$store.getters.totalPosts;
       },
     },
     methods: {
-      // getPosts() {
-      //   axios
-      //     .get("http://127.0.0.1:8001/api/posts")
-      //     .then((res) => {
-      //       this.$store.state.posts = res.data;
-      //     })
-      //     .catch((err) => console.log(err));
-      // },
       addPost() {
         if (this.post.title.length === 0 || this.post.body.length === 0) {
           alert("NOT A VALID POST");
