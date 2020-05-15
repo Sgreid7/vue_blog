@@ -2,16 +2,16 @@
   <div class="app">
     <ul class="navbar">
       <li>
-        <a href="/">Home</a>
+        <router-link to="/">Home</router-link>
       </li>
       <li>
-        <a href="/">About</a>
+        <router-link to="/about">About</router-link>
       </li>
       <li>
-        <a href="/">Login</a>
+        <router-link to="/login">Login</router-link>
       </li>
       <li>
-        <a href="/">Sign Up</a>
+        <router-link to="/signup">Sign Up</router-link>
       </li>
     </ul>
 
