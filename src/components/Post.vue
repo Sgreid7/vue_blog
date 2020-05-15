@@ -23,57 +23,61 @@
 </template>
 
 <script>
-  export default {
-    name: "post",
-    props: {
-      post: {
-        type: Object,
-        required: true,
-      },
+export default {
+  name: "post",
+  props: {
+    post: {
+      type: Object,
+      required: true
+    }
+  },
+  data() {
+    return {
+      id: this.post.id,
+      title: this.post.title,
+      body: this.post.body,
+      editing: this.post.editing,
+      beforeEditCache: ""
+    };
+  },
+  directives: {
+    focus: {
+      // directive definition
+      inserted: function(el) {
+        el.focus();
+      }
+    }
+  },
+  methods: {
+    removePost(id) {
+      this.$store.dispatch("deletePost", id);
     },
-    data() {
-      return {
-        id: this.post.id,
-        title: this.post.title,
-        body: this.post.body,
-        editing: this.post.editing,
-        beforeEditCache: "",
-      };
+    editPost() {
+      this.beforeEditCache = this.title;
+      this.editing = true;
     },
-    directives: {
-      focus: {
-        // directive definition
-        inserted: function(el) {
-          el.focus();
-        },
-      },
-    },
-    methods: {
-      removePost(id) {
-        this.$store.dispatch("deletePost", id);
-      },
-      editPost() {
-        this.beforeEditCache = this.title;
-        this.editing = true;
-      },
-      editDone() {
-        if (this.title.length === 0 || this.body.length === 0) {
-          this.title = this.beforeEditCache;
-        }
-        this.editing = false;
-        this.$store.dispatch("updatePost", {
-          id: this.id,
-          title: this.title,
-          body: this.body,
-          editing: this.editing,
-        });
-      },
-      cancelEdit() {
+    editDone() {
+      if (this.title.length === 0 || this.body.length === 0) {
         this.title = this.beforeEditCache;
-        this.editing = false;
-      },
+      }
+      this.editing = false;
+      this.$store.dispatch("updatePost", {
+        id: this.id,
+        title: this.title,
+        body: this.body,
+        editing: this.editing
+      });
     },
-  };
+    cancelEdit() {
+      this.title = this.beforeEditCache;
+      this.editing = false;
+    }
+  }
+};
 </script>
 
-<style></style>
+<style lang="scss">
+.post-item {
+  text-align: center;
+}
+</style>

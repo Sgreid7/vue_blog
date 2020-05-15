@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="flex-center">
     <h1>HOME PAGE</h1>
   </div>
 </template>
 
 <script>
-  export default {};
+export default {};
 </script>
 
 <style></style>
