@@ -10,11 +10,14 @@
       <li>
         <router-link to="/about">About</router-link>
       </li>
-      <li>
+      <li v-if="!loggedIn">
         <router-link to="/login">Login</router-link>
       </li>
-      <li>
+      <li v-if="!loggedIn">
         <router-link to="/signup">Sign Up</router-link>
+      </li>
+      <li v-if="loggedIn">
+        <router-link to="/logout">Logout</router-link>
       </li>
     </ul>
 
@@ -23,7 +26,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    loggedIn() {
+      return this.$store.getters.loggedIn;
+    }
+  }
+};
 </script>
 
 <style lang="scss">

@@ -7,27 +7,25 @@ axios.defaults.baseURL = "http://127.0.0.1:8001/api";
 
 export const store = new Vuex.Store({
   state: {
-    posts: [
-      // {
-      //   id: 1,
-      //   title: "This",
-      //   body: "That",
-      //   editing: false,
-      // },
-      // {
-      //   id: 2,
-      //   title: "Other",
-      //   body: "which",
-      //   editing: false,
-      // },
-    ],
+    token: localStorage.getItem("access_token") || null,
+    posts: [],
   },
   getters: {
+    loggedIn(state) {
+      return state.token !== null;
+    },
     totalPosts(state) {
       return state.posts.length;
     },
   },
   mutations: {
+    // eslint-disable-next-line no-unused-vars
+    deleteToken(state, token) {
+      state.token = null;
+    },
+    getToken(state, token) {
+      state.token = token;
+    },
     getPosts(state, posts) {
       state.posts = posts;
     },
@@ -54,6 +52,51 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
+    async signup(context, data) {
+      await axios
+        .post("/signup", {
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+    },
+    async deleteToken(context) {
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + context.state.token;
+
+      if (context.getters.loggedIn) {
+        await axios
+          .post("/logout")
+          .then((res) => {
+            localStorage.removeItem("access_token");
+            context.commit("deleteToken");
+            console.log(res);
+          })
+          .catch((err) => {
+            localStorage.removeItem("access_token");
+            context.commit("deleteToken");
+            console.log(err);
+          });
+      }
+    },
+    async getToken(context, user) {
+      await axios
+        .post("/login", {
+          username: user.username,
+          password: user.password,
+        })
+        .then((res) => {
+          const token = res.data.access_token;
+
+          localStorage.setItem("access_token", token);
+          context.commit("getToken", token);
+        })
+        .catch((err) => console.log(err));
+    },
     getPosts(context) {
       axios
         .get("/posts")

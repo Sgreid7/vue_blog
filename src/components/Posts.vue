@@ -76,7 +76,6 @@ h1 {
   text-align: center;
   color: #41b883;
   text-shadow: 0.1rem 0.1rem 0.1rem #000;
-  text-decoration: underline;
   margin: 1rem;
   font-size: 2.5rem;
 }
