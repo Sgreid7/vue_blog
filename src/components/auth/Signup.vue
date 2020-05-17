@@ -4,7 +4,13 @@
 
     <form @submit.prevent="signup">
       <label for="name">Name</label>
-      <input type="text" name="name" placeholder="John Doe" autocomplete="off" v-model="name" />
+      <input
+        type="text"
+        name="name"
+        placeholder="John Doe"
+        autocomplete="new-password"
+        v-model="name"
+      />
 
       <label for="email">Email</label>
       <input

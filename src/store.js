@@ -98,6 +98,9 @@ export const store = new Vuex.Store({
         .catch((err) => console.log(err));
     },
     getPosts(context) {
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + context.state.token;
+
       axios
         .get("/posts")
         .then((res) => {
