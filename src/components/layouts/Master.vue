@@ -5,19 +5,19 @@
         <router-link to="/posts">Posts</router-link>
       </li>
       <li>
-        <router-link to="/">Home</router-link>
+        <router-link class="border-left" to="/">Home</router-link>
       </li>
       <li>
-        <router-link to="/about">About</router-link>
+        <router-link class="border-left" to="/about">About</router-link>
       </li>
       <li v-if="!loggedIn">
-        <router-link to="/login">Login</router-link>
+        <router-link class="border-left" to="/login">Login</router-link>
       </li>
       <li v-if="!loggedIn">
-        <router-link to="/signup">Sign Up</router-link>
+        <router-link class="border-left" to="/signup">Sign Up</router-link>
       </li>
       <li v-if="loggedIn">
-        <router-link to="/logout">Logout</router-link>
+        <router-link class="border-left" to="/logout">Logout</router-link>
       </li>
     </ul>
 
@@ -75,6 +75,10 @@ export default {
   height: 100vh;
 }
 
+.border-left {
+  border-left: 0.3rem solid #000;
+}
+
 .flex-center {
   display: flex;
   justify-content: center;
@@ -96,6 +100,7 @@ export default {
     padding: 0 1.5rem;
     font-size: 1.2rem;
     font-weight: 600;
+    margin: 0;
     letter-spacing: 0.1rem;
     text-decoration: none;
     text-transform: uppercase;
