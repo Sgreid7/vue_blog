@@ -9,6 +9,7 @@ export const store = new Vuex.Store({
   state: {
     token: localStorage.getItem("access_token") || null,
     posts: [],
+    name: "",
   },
   getters: {
     loggedIn(state) {
@@ -19,6 +20,9 @@ export const store = new Vuex.Store({
     },
   },
   mutations: {
+    clearName(state) {
+      state.name = "";
+    },
     clearPosts(state) {
       state.posts = [];
     },
@@ -53,8 +57,27 @@ export const store = new Vuex.Store({
       const index = state.posts.findIndex((item) => item.id == id);
       state.posts.splice(index, 1);
     },
+    getName(state, name) {
+      state.name = name;
+    },
   },
   actions: {
+    clearName(context) {
+      context.commit("clearName");
+    },
+    async getName(context) {
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + context.state.token;
+
+      await axios
+        .get("/user")
+        .then((res) => {
+          const name = res.data.name;
+          context.commit("getName", name);
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+    },
     clearPosts(context) {
       context.commit("clearPosts");
     },

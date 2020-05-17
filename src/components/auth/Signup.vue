@@ -3,6 +3,7 @@
     <h1>Sign Up Here</h1>
 
     <form @submit.prevent="signup">
+      <div v-if="successMessage" class="success">{{ successMessage}}</div>
       <label for="name">Name</label>
       <input
         type="text"
@@ -35,7 +36,8 @@ export default {
     return {
       name: "",
       email: "",
-      password: ""
+      password: "",
+      successMessage: ""
     };
   },
   methods: {
@@ -47,6 +49,7 @@ export default {
           password: this.password
         })
         .then(res => {
+          this.successMessage = "Successfully Registered!";
           this.$router.push("/login");
           console.log(res);
         });
@@ -63,6 +66,16 @@ export default {
   justify-content: center;
 }
 
+.success {
+  background-color: #dff0d8;
+  color: green;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  border: 0.1rem solid #41b883;
+  border-radius: 0.5rem;
+  width: 50%;
+}
+
 form {
   display: flex;
   color: #fff;
@@ -70,8 +83,8 @@ form {
   align-items: center;
   flex-direction: column;
   width: 50%;
-  height: 30vh;
-  background: rgba(0, 0, 0, 0.7);
+  height: 40vh;
+  background: rgba(0, 0, 0, 0.9);
 
   label {
     font-size: 1.5rem;
@@ -81,6 +94,7 @@ form {
   input {
     padding: 0.5rem;
     border: 0.05rem solid #41b883;
+    width: 50%;
 
     &:focus {
       outline: none;

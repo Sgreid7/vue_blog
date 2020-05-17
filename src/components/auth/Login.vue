@@ -3,6 +3,8 @@
     <h1>Login Here</h1>
 
     <form @submit.prevent="login">
+      <!-- <div class="errors">{{ error }}</div> -->
+
       <label for="email">Username / Email</label>
       <input
         type="email"
@@ -26,7 +28,8 @@ export default {
   data() {
     return {
       username: "",
-      password: ""
+      password: "",
+      error: ""
     };
   },
   methods: {
@@ -39,6 +42,10 @@ export default {
         .then(res => {
           this.$router.push("/posts");
           console.log(res);
+        })
+        .catch(err => {
+          // console.log(err.res);
+          this.errors = err.res.data;
         });
     }
   }
@@ -60,8 +67,15 @@ form {
   align-items: center;
   flex-direction: column;
   width: 50%;
-  height: 30vh;
-  background: rgba(0, 0, 0, 0.7);
+  height: 40vh;
+  background: rgba(0, 0, 0, 0.9);
+
+  .errors {
+    padding: 0.5rem 1rem;
+    color: red;
+    background: #fedede;
+    border-radius: 0.25rem;
+  }
 
   label {
     font-size: 1.5rem;
@@ -71,6 +85,7 @@ form {
   input {
     padding: 0.5rem;
     border: 0.05rem solid #41b883;
+    width: 50%;
 
     &:focus {
       outline: none;

@@ -5,7 +5,7 @@
       <input type="text" class="post-input" placeholder="Body" v-model="post.body" />
       <button class="post-btn">POST</button>
     </form>
-    <h1>Your Posts</h1>
+    <h1>{{this.$store.state.name}}'s Posts</h1>
 
     <post v-for="post in this.$store.state.posts" :key="post.id" :post="post"></post>
 
@@ -26,6 +26,7 @@ export default {
   data() {
     return {
       idForPost: 3,
+      name: "",
       post: {
         id: "id",
         title: "",
@@ -35,6 +36,7 @@ export default {
   },
   created() {
     this.$store.dispatch("getPosts");
+    this.$store.dispatch("getName");
   },
   computed: {
     totalPosts() {
