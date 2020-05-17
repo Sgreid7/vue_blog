@@ -58,19 +58,27 @@ export default {
   padding: 1rem 0;
   margin: 0;
   justify-content: flex-end;
-  background: #f5f8fa;
-  border-bottom: 0.15rem solid lightgrey;
+  background: #42b983;
+  border-bottom: 0.2rem solid #000;
   margin-bottom: 2rem;
   list-style: none;
 
   a {
-    color: #636b6f;
+    color: #fff;
+    text-shadow: 0.05rem 0.05rem 0.05rem #000;
     padding: 0 1.5rem;
     font-size: 1.2rem;
     font-weight: 600;
     letter-spacing: 0.1rem;
     text-decoration: none;
     text-transform: uppercase;
+    transition: 0.3s ease;
+
+    &:hover {
+      color: #000;
+      text-shadow: 0.05rem 0.05rem 0.05rem #fff;
+      transform: translateY(-0.25rem);
+    }
   }
 }
 </style>

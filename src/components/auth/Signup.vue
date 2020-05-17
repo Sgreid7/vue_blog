@@ -59,19 +59,26 @@ export default {
 .flex-center {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
 }
 
 form {
   display: flex;
-  justify-content: center;
+  color: #fff;
+  justify-content: space-evenly;
   align-items: center;
   flex-direction: column;
-  margin: 0 auto;
-  width: 25%;
+  width: 50%;
+  height: 30vh;
+  background: rgba(0, 0, 0, 0.7);
+
+  label {
+    font-size: 1.5rem;
+    text-shadow: 0.05rem 0.05rem 0.05rem #41b883;
+  }
 
   input {
-    margin: 0.5rem;
     padding: 0.5rem;
     border: 0.05rem solid #41b883;
 
@@ -81,7 +88,9 @@ form {
   }
 
   button {
-    margin-top: 0.5rem;
+    margin: 0.5rem;
+    font-size: 1.2rem;
+    letter-spacing: 0.1rem;
     width: 50%;
   }
 }

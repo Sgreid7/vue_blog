@@ -5,7 +5,7 @@
       <input type="text" class="post-input" placeholder="Body" v-model="post.body" />
       <button class="post-btn">POST</button>
     </form>
-    <h1>All Posts</h1>
+    <h1>Your Posts</h1>
 
     <post v-for="post in this.$store.state.posts" :key="post.id" :post="post"></post>
 
