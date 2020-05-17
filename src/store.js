@@ -19,6 +19,9 @@ export const store = new Vuex.Store({
     },
   },
   mutations: {
+    clearPosts(state) {
+      state.posts = [];
+    },
     // eslint-disable-next-line no-unused-vars
     deleteToken(state, token) {
       state.token = null;
@@ -52,6 +55,9 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
+    clearPosts(context) {
+      context.commit("clearPosts");
+    },
     async signup(context, data) {
       await axios
         .post("/signup", {
